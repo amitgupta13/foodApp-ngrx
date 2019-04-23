@@ -8,19 +8,15 @@ import * as firebase from 'firebase';
 })
 export class AppComponent implements OnInit {
   loadedFeature = 'recipe';
-  
-  ngOnInit(){
+
+  ngOnInit() {
     firebase.initializeApp({
-      apiKey: "AIzaSyB_l_OMzTAEbWF9_sShrSiqsz6FEAiSyYA",
-      authDomain: "http-8a947.firebaseapp.com",
-      // databaseURL: "https://http-8a947.firebaseio.com",
-      // projectId: "http-8a947",
-      // storageBucket: "http-8a947.appspot.com",
-      // messagingSenderId: "535215513105",
-    })
+      apiKey: "AIzaSyBrkKleAX_8jHpPmTchVBmDD7Hkj8TT1VE",
+      authDomain: "ng-recipe-book-3adbb.firebaseapp.com"
+    });
   }
 
-  onNavigate(feature: string){
+  onNavigate(feature: string) {
     this.loadedFeature = feature;
   }
 }

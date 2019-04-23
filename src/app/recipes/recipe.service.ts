@@ -1,62 +1,56 @@
-import { Recipe } from "./recipe.model";
-import { Injectable } from "@angular/core";
-import { Ingredient } from "../shared/ingredient.model";
-import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { Subject } from "rxjs";
+import { Subject } from 'rxjs/Subject';
 
-@Injectable()
+import { Recipe } from './recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
+
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
-    private recipes: Recipe[] = [
-        new Recipe(
-          'Recipe 1', 
-          'First Recipe for our test', 
-          'https://foodrevolution.org/wp-content/uploads/2018/04/blog-featured-diabetes-20180406-1330.jpg',
-          [
-            new Ingredient('meat', 1),
-            new Ingredient('bread', 6)
-          ]
-        ),
-        new Recipe(
-          'Recipe 2', 
-          'Second Recipe for our test', 
-          'https://newsroom.unsw.edu.au/sites/default/files/styles/full_width/public/thumbnails/image/5_junk_food_shutterstock_1.jpg?itok=X29w4W_j',
-          [
-            new Ingredient('buns', 2),
-            new Ingredient('steak', 4)
-          ]
-        )
-      ];
 
-      constructor(private slService: ShoppingListService){}
+  private recipes: Recipe[] = [
+    new Recipe(
+      'Tasty Schnitzel',
+      'A super-tasty Schnitzel - just awesome!',
+      'https://upload.wikimedia.org/wikipedia/commons/7/72/Schnitzel.JPG',
+      [
+        new Ingredient('Meat', 1),
+        new Ingredient('French Fries', 20)
+      ]),
+    new Recipe('Big Fat Burger',
+      'What else you need to say?',
+      'https://upload.wikimedia.org/wikipedia/commons/b/be/Burger_King_Angus_Bacon_%26_Cheese_Steak_Burger.jpg',
+      [
+        new Ingredient('Buns', 2),
+        new Ingredient('Meat', 1)
+      ])
+  ];
 
-      setRecipes(recipes: Recipe[]){
-        this.recipes = recipes;
-        this.recipesChanged.next(this.recipes.slice());
-      }
-      
-      getRecipes(){
-          return this.recipes.slice();
-      }
+  constructor() {}
 
-      addIngredientsToShoppingList(ingredients: Ingredient[]){
-        this.slService.addIngredients(ingredients);
-      }
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
-      getRecipe(index: number){
-        return this.recipes[index];
-      }
+  getRecipes() {
+    return this.recipes.slice();
+  }
 
-      addRecipe(recipe: Recipe){
-        this.recipes.push(recipe);
-        this.recipesChanged.next(this.recipes.slice());
-      }
-      updateRecipe(index:number, newRecipe: Recipe){
-        this.recipes[index] = newRecipe;
-        this.recipesChanged.next(this.recipes.slice());
-      }
-      deleteRecipe(index:number){
-        this.recipes.splice(index, 1);
-        this.recipesChanged.next(this.recipes);
-      }
+  getRecipe(index: number) {
+    return this.recipes[index];
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 }

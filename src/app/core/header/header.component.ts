@@ -1,37 +1,43 @@
-import { Component } from "@angular/core";
-import { DataStorageService } from "../../shared/data-storage.service";
-// import { Response } from "@angular/http";
-import { AuthService } from "../../auth/auth.service";
-import { HttpEvent, HttpEventType } from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+// import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import { DataStorageService } from '../../shared/data-storage.service';
+import { AuthService } from '../../auth/auth.service';
+import * as fromApp from '../../store/app.reducers';
+import * as fromAuth from '../../auth/store/auth.reducers';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: 'header.component.html'
+  selector: 'app-header',
+  templateUrl: './header.component.html'
 })
+export class HeaderComponent implements OnInit {
+  authState: Observable<fromAuth.State>;
 
-export class HeaderComponent {
-    constructor(private dataStorage: DataStorageService,
-        private authService: AuthService){}
+  constructor(private dataStorageService: DataStorageService,
+              private authService: AuthService,
+              private store: Store<fromApp.AppState>) {
+  }
 
-    onSaveData(){
-        this.dataStorage.storeRecipes()
-            .subscribe(
-                (response:HttpEvent<Object>)=>{
-                    // console.log(response.type === HttpEventType.Response);
-                    console.log(response);
-                }
-            )
-    }
+  ngOnInit() {
+    this.authState = this.store.select('auth');
+  }
 
-    onFetchData(){
-        this.dataStorage.getRecipes();
-    }
+  onSaveData() {
+    this.dataStorageService.storeRecipes()
+      .subscribe(
+        (response) => {
+          console.log(response);
+        }
+      );
+  }
 
-    onLogout(){
-        this.authService.logout();
-    }
+  onFetchData() {
+    this.dataStorageService.getRecipes();
+  }
 
-    isAuthenticated() {
-        return this.authService.isAuthenticated();
-      }
+  onLogout() {
+    this.authService.logout();
+  }
 }
